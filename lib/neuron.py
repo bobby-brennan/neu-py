@@ -1,29 +1,46 @@
-import numpy as np
+import theano as Theano
+import theano.tensor as T
+import numpy as Numpy
 
-class neuron:
-  def __init__(self, options):
-    self.weights = {};
-    self.weights['hh'] = np.random.rand(options.h_size, options.h_size)
-    self.weights['xh'] = np.random.rand(options.x_size, options.h_size)
-    self.weights['hy'] = np.random.rand(options.h_size, options.y_size)
-    self.h = np.zeros(options.h_size);
+x_size = 1
+h_size = 6
+y_size = 1
+rate = .05
 
-  def probe(self, input, isTest=false):
-    history = np.dot(self.weights['hh'], self.h)
-    info = np.dot(input, self.weights['xh'])
-    sum = np.add(history, info)
-    nextH = np.tanh(sum)
-    output = np.dot(nextH, self.weights['hy'])
-    if !isTest:
-      self.nextH = nextH
-    return output
+x = T.dvector('x')
 
-  def train(self, input, output, expected):
-    loss = self.getLoss(output, expected)
-    for name, weights in self.weights.items():
-      randAdjust = np.random.rand(weights.shape[0], weights.shape[1])
-      self.weights[name] = map(adjust, weights) 
+h = Theano.shared(
+    value=Numpy.zeros((h_size), dtype=Theano.config.floatX),
+    name='h')
 
-  def step(self):
-    self.h = self.nextH
-  
+w_hh = Theano.shared(
+    value=Numpy.random.uniform(size=(h_size, h_size), low=-1, high=1),
+    name='w_hh')
+w_xh = Theano.shared(
+    value=Numpy.random.uniform(size=(x_size, h_size), low=-1, high=1),
+    name='w_xh')
+w_hy = Theano.shared(
+    value=Numpy.random.uniform(size=(h_size, y_size), low=-1, high=1),
+    name='w_hy')
+
+history = T.dot(h, w_hh)
+input = T.dot(x, w_xh)
+sum = T.add(history, input)
+new_h = T.tanh(sum)
+output = T.dot(new_h, w_hy)
+
+target = T.dvector('target')
+error = T.sum((output - target) ** 2)
+g_w_hh, g_w_xh, g_w_hy = T.grad(error, [w_hh, w_xh, w_hy])
+
+step = Theano.function([x], output,
+    updates=[(h, new_h)])
+
+train = Theano.function([x, target], [new_h, output, error],
+  updates=[(h, new_h),
+           (w_hh, w_hh - rate * g_w_hh),
+           (w_xh, w_xh - rate * g_w_xh),
+           (w_hy, w_hy - rate * g_w_hy)])
+
+def addSample(sample, target):
+  return train(sample, target)

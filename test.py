@@ -17,15 +17,16 @@ TARGETS = [
 
 TRIALS = 10000
 MAX_ERR = .01
+neuron = Neuron.Neuron(x_size=1, y_size=1, h_size=6, rate=.05)
 
 class PatternTest(unittest.TestCase):
   def test(self):
     for x in range(1, TRIALS):
-      h, o, e = Neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
+      h, o, e = neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
       #print('i:{}\tt:{}\to:{}\te:{}'.format(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)], o, e))
 
     for x in range(TRIALS, TRIALS + len(SAMPLES) * 2):
-      h, o, e = Neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
+      h, o, e = neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
       print('i:{}\tt:{}\to:{}\te:{}'.format(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)], o, e))
       self.assertEqual(True, e < MAX_ERR)
 

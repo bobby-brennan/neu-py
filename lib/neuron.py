@@ -44,3 +44,6 @@ train = Theano.function([x, target], [new_h, output, error],
 
 def addSample(sample, target):
   return train(sample, target)
+
+def takeStep(sample):
+  return step(sample)

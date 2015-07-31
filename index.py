@@ -13,6 +13,12 @@ TARGETS = [
   Numpy.array([.1]),
   Numpy.array([-.9])
 ]
-for x in range(1, 10000):
+
+TRIALS = 10000
+for x in range(1, TRIALS):
   h, o, e = Neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
-  print('i:{}\to:{}\te:{}'.format(SAMPLES[x % len(SAMPLES)], o, e))
+  print('i:{}\tt:{}\to:{}\te:{}'.format(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)], o, e))
+
+for x in range(TRIALS, TRIALS + 10):
+  h, o, e = Neuron.addSample(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)])
+  print('i:{}\tt:{}\to:{}\te:{}'.format(SAMPLES[x % len(SAMPLES)], TARGETS[x % len(TARGETS)], o, e))

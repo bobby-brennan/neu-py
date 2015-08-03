@@ -25,7 +25,8 @@ def strToVec(str, skip=-1):
     if skip == i:
       continue
     charVec = charToVec(str[i]) 
-    weight = 1.0 / (1 + abs(len(str) / 2 - i))
+    weight = 1.0 / abs(skip - i)
+    #weight = 1.0 / (1 + abs(len(str) / 2 - i))
     sum = Numpy.add(sum, weight * charVec)
   return sum
 

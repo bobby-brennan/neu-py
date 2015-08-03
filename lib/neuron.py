@@ -7,7 +7,7 @@ class Neuron:
     x = T.dvector('x')
 
     self.h = Theano.shared(
-        value=Numpy.zeros((h_size), dtype=Theano.config.floatX),
+        value=Numpy.zeros((h_size)),
         name='h')
 
     w_hh = Theano.shared(

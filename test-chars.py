@@ -2,12 +2,13 @@ import lib.neuron as Neuron
 import util.text_util as Text
 import numpy as Numpy
 import theano as Theano
+import time
 import math
 import sys
 
 x_size = Text.num_chars
 y_size = Text.num_chars
-window_size = 13
+window_size = 7
 neurons = []
 for i in range(0, window_size):
   neurons.append(Neuron.Neuron(x_size, y_size, h_size=window_size, rate=.1, range=.1))
@@ -25,25 +26,26 @@ for i in range(0, window_size):
 errs = [0] * 100
 avgErr = 0.0
 total = 0
-for trial in range(0, 10000):
+t0 = time.time()
+for trial in range(0, 1000):
   output = ''
   for i in range(0, window_size):
     input = Text.strToVec(charBuf, i)
     expected = Text.charToVec(charBuf[i])
     h, o, e = neurons[i].train(input, expected)
-    if (total % 500 == 1):
-      print 'o:{}'.format(Numpy.sum(o))
+    #if (total % 500 == 1):
+      #print 'o:{}'.format(Numpy.sum(o))
     output = output + Text.vecToChar(o)
 
   errs[total % len(errs)] = e
 
   next = getChar(total)
   total = total + 1
-  if (total % 500 < 5):
-    print 'IN: ' + charBuf.replace('\n', '$')
-    print 'OUT:' + output.replace('\n', '$')
-    print e
-    if (total % 500 == 4): print ''
+  #if (total % 500 < 5):
+    #print 'IN: ' + charBuf.replace('\n', '$')
+    #print 'OUT:' + output.replace('\n', '$')
+    #print e
+    #if (total % 500 == 4): print ''
 
   if not next:
     break
@@ -51,6 +53,7 @@ for trial in range(0, 10000):
 
 print
 print
+print 'took {} secs'.format(time.time() - t0)
 print '------------'
 print
 print
@@ -68,7 +71,7 @@ for i in range(0, 1000):
   prediction = Text.vecsToStr(char_predictions)
   gen_text = gen_text + prediction[0]
   char_predictions = char_predictions[1:]
-  char_predictions.append(Numpy.zeros((x_size), dtype=Theano.config.floatX))
+  char_predictions.append(Numpy.zeros((x_size)))
 
 print
 print

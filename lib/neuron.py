@@ -38,9 +38,9 @@ class Neuron:
 
     self.train = Theano.function([x, target], [new_h, output, error],
       updates=[(self.h, new_h),
-               (w_hh, w_hh - rate * g_w_hh * T.abs_(w_hh)),
-               (w_xh, w_xh - rate * g_w_xh * T.abs_(w_xh)),
-               (w_hy, w_hy - rate * g_w_hy * T.abs_(w_hy))])
+               (w_hh, w_hh - rate * g_w_hh),
+               (w_xh, w_xh - rate * g_w_xh),
+               (w_hy, w_hy - rate * g_w_hy)])
 
   def addSample(self, sample, target):
     return self.train(sample, target)

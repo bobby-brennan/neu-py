@@ -8,10 +8,10 @@ import sys
 x_size = Text.num_chars
 y_size = Text.num_chars
 
-window_size = 15
+window_size = 9
 neurons = []
 for i in range(0, window_size):
-  neurons.append(Neuron.Neuron(x_size, y_size, h_size=window_size, rate=.05, range=.05))
+  neurons.append(Neuron.Neuron(x_size, y_size, h_size=window_size*3, rate=.1, range=.1))
 
 text = open('./data/shak-mini.txt')
 

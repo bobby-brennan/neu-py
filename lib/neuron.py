@@ -7,17 +7,17 @@ class Neuron:
     x = T.dvector('x')
 
     self.h = Theano.shared(
-        value=Numpy.zeros((h_size)),
+        value=Numpy.zeros((h_size), dtype=Theano.config.floatX),
         name='h')
 
     w_hh = Theano.shared(
-        value=Numpy.random.uniform(size=(h_size, h_size), low=-range, high=range),
+        value=Numpy.asmatrix(Numpy.random.uniform(size=(h_size, h_size), low=-range, high=range), dtype=Theano.config.floatX),
         name='w_hh')
     w_xh = Theano.shared(
-        value=Numpy.random.uniform(size=(x_size, h_size), low=-range, high=range),
+        value=Numpy.asmatrix(Numpy.random.uniform(size=(x_size, h_size), low=-range, high=range), dtype=Theano.config.floatX),
         name='w_xh')
     w_hy = Theano.shared(
-        value=Numpy.random.uniform(size=(h_size, y_size), low=-range, high=range),
+        value=Numpy.asmatrix(Numpy.random.uniform(size=(h_size, y_size), low=-range, high=range), dtype=Theano.config.floatX),
         name='w_hy')
 
     history = T.dot(self.h, w_hh)

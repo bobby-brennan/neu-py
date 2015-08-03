@@ -71,7 +71,7 @@ for i in range(0, 1000):
   prediction = Text.vecsToStr(char_predictions)
   gen_text = gen_text + prediction[0]
   char_predictions = char_predictions[1:]
-  char_predictions.append(Numpy.zeros((x_size)))
+  char_predictions.append(Numpy.zeros((x_size), dtype=Theano.config.floatX))
 
 print
 print
